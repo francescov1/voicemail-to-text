@@ -7,7 +7,6 @@ exports.accessVoicemail = async (number) => {
   const voice = new VoiceResponse();
 
   // initiate the call
-  /*
   const call = await client.calls.create({
     url: `${config.base_url}/api/voice/initialCallHandler`,
     to: number,
@@ -15,12 +14,11 @@ exports.accessVoicemail = async (number) => {
     statusCallback: `${config.base_url}/api/voice/statusCallBack`,
     statusCallbackMethod: 'POST'
   });
-  */
 
   // press pound key when call begins
-  voice.dial().number({
-    sendDigits: '#',
-  }, number);
+  voice.play({
+    digits: '#'
+  })
 
   console.log(voice.toString());
 
