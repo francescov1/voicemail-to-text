@@ -7,7 +7,8 @@ const client = require('../config/twilio');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 router.post('/initialCallHandler', async (req, res, next) => {
-  const message = req.query.message;
+  const { number, message } = req.query;
+
   const response = new VoiceResponse();
 
   // press pound key when call begins
@@ -23,5 +24,55 @@ router.post('/initialCallHandler', async (req, res, next) => {
   res.type('text/xml');
   res.send(response.toString());
 });
+
+
+router.post('/read', async (req, res, next) => {
+  const voicemailDialog = req.body.dialog;
+  const number = req.body.number;
+
+  // TODO: check whos number, may nee to adjust the speech to text based
+  // on which service provider
+
+  // for now assume its rogers
+
+  const voicemails = dialog.parseMessages(voicemailDialog);
+
+  // TODO: get sender
+  response = `New voicemails: ${voicemails.new.n}\n`;
+  let counter = 1;
+  for (let msg of voicemails.new.messages) {
+    response += `\n${counter} - ${msg}`
+    counter++
+  }
+
+  response += `\n\nSaved voicemails: ${voicemails.saved.n}\n`
+
+  for (let msg of voicemails.saved.messages) {
+    response += `\n${counter} - ${msg}`
+    counter++
+  }
+
+  try {
+    const message = await client.messages.create({
+      body: response,
+      from: config.twilio.sender_id,
+      to: number
+    });
+
+    return res.end();
+  }
+  catch(err) { return next(err) }
+
+})
+
+// TODO:
+router.post('/delete', async (req, res, next) => {
+  const voicemailDialog = req.body.dialog;
+  const number = req.body.number;
+  const voicemailsToDelete = req.body.delete;
+
+  const voicemails = dialog.parseMessages(voicemailDialog);
+
+})
 
 module.exports = router;
