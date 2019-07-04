@@ -8,9 +8,6 @@ const calls = require('../helpers/calls');
 const dialog = require('../helpers/dialog');
 
 router.post('/getVoicemail', async (req, res, next) => {
-  console.log('req.body:')
-  console.log(req.body)
-
   const number = req.body.From;
 
   // either "read" or "delete {n1} {n2} ..."

@@ -8,6 +8,9 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 router.post('/initialCallHandler', async (req, res, next) => {
   const { number, message } = req.query;
+  console.log('sending data to call');
+  console.log('number: ' + number)
+  console.log('message: ' + message);
 
   const response = new VoiceResponse();
 
@@ -24,7 +27,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
   // gather the voicemail and send for parsing
   const gather = response.gather({
     input: 'speech',
-    action: config.base_url + '/call/' + message.split(' ')[0],
+    action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
     finishOnKey: '',
     hints: 'to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages'
   });
@@ -34,8 +37,11 @@ router.post('/initialCallHandler', async (req, res, next) => {
 });
 
 router.post('/read', async (req, res, next) => {
-  const voicemailDialog = req.body.dialog;
-  const number = req.body.number;
+  console.log('parsing voicemail dialog');
+  console.log('req.body received:')
+  console.log(req.body)
+  const voicemailDialog = req.body.SpeechResult;
+  const number = req.query.number;
 
   // TODO: check whos number, may nee to adjust the speech to text based
   // on which service provider

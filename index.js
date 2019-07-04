@@ -4,6 +4,7 @@ const config = require('./config');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+const logger = require("morgan");
 
 const routes = require('./routes');
 const errors = require('./errors/middleware');
@@ -12,6 +13,7 @@ const app = express();
 
 // basic middleware
 app.use(helmet());
+app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
