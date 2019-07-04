@@ -43,6 +43,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 // continue same flow as above
 
 router.post('/initialCallHandler', async (req, res, next) => {
+  const action = req.query.action;
   const response = new VoiceResponse();
 
   // press pound key when call begins
