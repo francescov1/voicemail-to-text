@@ -20,14 +20,14 @@ router.post('/receive', async (req, res, next) => {
   let response;
   switch (message[0]) {
     case "read":
-      await calls.accessVoicemail(number);
+      //await calls.accessVoicemail(number);
       // call number, get voicemail, relay back
       response = `Number of voicemails: {n_voicemails}\n\n1 - Left from {sender_number}\nMessage: {message}`
       break;
     case "delete":
       // call number, get voicemail, loop through rest of message array and delete
       // numbers provided
-      response = `Voicemails ${message.slice(0)} deleted successfully.`
+      response = `Voicemails ${message.slice(1)} deleted successfully.`
       break;
     default:
       response = `'${message[0]}' is an invalid command.\n\nAvailable commands:\READ - Reply with all voicemails\DELETE {n1} {n2} ... - Delete voicemails'`
