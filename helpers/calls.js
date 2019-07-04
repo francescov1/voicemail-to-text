@@ -18,7 +18,7 @@ exports.accessVoicemail = async (number) => {
   // press pound key when call begins
   voice.play({
     digits: '#'
-  })
+  });
 
   console.log(voice.toString());
 
