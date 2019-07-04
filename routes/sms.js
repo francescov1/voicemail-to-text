@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 const client = require('../config/twilio');
+const calls = require('../helpers/calls');
 
 router.post('/receive', async (req, res, next) => {
   const number = req.body.From;
@@ -19,6 +20,7 @@ router.post('/receive', async (req, res, next) => {
   let response;
   switch (message[0]) {
     case "read":
+      await calls.accessVoicemail(number);
       // call number, get voicemail, relay back
       response = `Number of voicemails: {n_voicemails}\n\n1 - Left from {sender_number}\nMessage: {message}`
       break;
