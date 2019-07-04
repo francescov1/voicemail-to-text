@@ -1,29 +1,24 @@
 'use strict';
-const config = require('../config');
+const config = require('../config/index');
 const client = require('../config/twilio');
-const querystring = require("querystring");
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
-module.exports = {
-  initCall: function(smsReceived, fromNumber) {
+exports.accessVoicemail = (number) => {
+  const voice = new VoiceResponse();
 
-    const query = querystring.stringify({ phrase: smsReceived, from: fromNumber });
+  // initiate the call
+  const call = await client.calls.create({
+    url: `${config.base_url}/api/voice/initialCallHandler`,
+    to: number,
+    from: config.twilio.sender_id,
+    statusCallback: `${config.base_url}/api/voice/statusCallBack`,
+    statusCallbackMethod: 'POST'
+  });
 
-    return client.calls.create({
-      url: `${config.base_url}/api/voice/initialCallHandler?${query}`,
-      to: config.emergency_number,
-	  from: config.twilio.sender_id,
-	  statusCallback: `${config.base_url}/api/voice/statusCallBack`,
-      statusCallbackMethod: 'POST',
-    });
-  },
+  // press pound key when call begins
+  response.dial().number({
+    sendDigits: '#',
+  }, number);
 
-  updateCall: function(smsReceived, fromNumber) {
-
-    const query = querystring.stringify({ phrase: smsReceived, from: fromNumber });
-
-    return client.calls(process.env.call_sid).update({
-      method: 'POST',
-      url: `${config.base_url}/api/voice/updateCallHandler?${query}`
-    });
-  }
+  console.log(response.toString());
 }
