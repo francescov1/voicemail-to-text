@@ -2,10 +2,12 @@
 const config = require('../config/index');
 const client = require('../config/twilio');
 
-exports.accessVoicemail = async (number, action) => {
+exports.accessVoicemail = async (number, message) => {
+  const voice = new VoiceResponse();
+
   // initiate the call
   const call = await client.calls.create({
-    url: `${config.base_url}/call/initialCallHandler?action=${action}`,
+    url: `${config.base_url}/call/initialCallHandler?message=${message}`,
     to: number,
     from: config.twilio.sender_id
   });
