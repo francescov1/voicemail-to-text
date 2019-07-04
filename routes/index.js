@@ -1,13 +1,7 @@
 'use strict';
 const express = require('express');
-const exampleRoutes = require('./examples');
+const router = express.Router();
 
-module.exports = function(app) {
-  // mount api routes on to api router
-  const apiRouter = express.Router();
-  apiRouter.use('/examples', exampleRoutes);
+router.use('/sms', require('./sms'));
 
-  // mount api router on to app
-  app.use('/api', apiRouter);
-
-};
+module.exports = router;
