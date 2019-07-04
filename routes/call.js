@@ -50,6 +50,13 @@ router.post('/initialCallHandler', async (req, res, next) => {
     digits: '#'
   });
 
+  // enter password
+  response.play({
+    digits: config.voice_password[0] + 'www' + config.voice_password.slice(1)
+  });
+
+  console.log(response.toString());
+
   res.type('text/xml');
   res.send(response.toString());
 });
