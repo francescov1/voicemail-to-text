@@ -21,10 +21,17 @@ router.post('/initialCallHandler', async (req, res, next) => {
     digits: config.voice_password[0] + 'www' + config.voice_password.slice(1)
   });
 
+  // gather the voicemail and send for parsing
+  const gather = response.gather({
+    input: 'speech',
+    action: config.base_url + '/call/' + message.split(' ')[0],
+    finishOnKey: '',
+    hints: 'to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages'
+  });
+
   res.type('text/xml');
   res.send(response.toString());
 });
-
 
 router.post('/read', async (req, res, next) => {
   const voicemailDialog = req.body.dialog;
