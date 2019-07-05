@@ -1,9 +1,11 @@
 'use strict';
-const config = require('../config/index');
+const config = require('../config');
+const client = require('../config/twilio');
+const dialog = require('../helpers/dialog');
+
 const express = require('express');
 const router = express.Router();
 
-const client = require('../config/twilio');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 router.post('/initialCallHandler', async (req, res, next) => {
@@ -28,8 +30,10 @@ router.post('/initialCallHandler', async (req, res, next) => {
   const gather = response.gather({
     input: 'speech',
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
+    profanityFilter: false,
     finishOnKey: '',
-    hints: 'to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages'
+    hints: 'to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
+    actionOnEmptyResult: true
   });
 
   res.type('text/xml');
@@ -48,7 +52,7 @@ router.post('/read', async (req, res, next) => {
 
   // for now assume its rogers
 
-  const voicemails = dialog.parseMessages(voicemailDialog);
+  const voicemails = dialog.parseVoicemail(voicemailDialog);
 
   // TODO: get sender
   response = `New voicemails: ${voicemails.new.n}\n`;

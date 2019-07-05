@@ -8,7 +8,8 @@ const calls = require('../helpers/calls');
 const dialog = require('../helpers/dialog');
 
 router.post('/getVoicemail', async (req, res, next) => {
-  const number = req.body.From;
+  // remove '+' from number
+  const number = req.body.From.slice(1);
 
   // either "read" or "delete {n1} {n2} ..."
   const message = req.body.Body.toLowerCase().trim().split(' ');
