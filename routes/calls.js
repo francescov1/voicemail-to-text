@@ -18,13 +18,12 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   // press pound key when call begins
   response.play({
-    digits: '#'
+    digits: `4039928497`
   });
 
-  // enter password
-  response.play({
-    digits: config.voice_password[0] + 'www' + config.voice_password.slice(1)
-  });
+  response.pause({ length: 10 })
+
+  response.play({ digits: config.voice_password });
 
   // gather the voicemail and send for parsing
   const gather = response.gather({
@@ -32,7 +31,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
     profanityFilter: false,
     finishOnKey: '',
-    hints: 'to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
+    hints: 'to erase this message press 7 to save it press 9,to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
     actionOnEmptyResult: true
   });
 
@@ -55,7 +54,7 @@ router.post('/read', async (req, res, next) => {
   const voicemails = dialog.parseVoicemail(voicemailDialog);
 
   // TODO: get sender
-  response = `New voicemails: ${voicemails.new.n}\n`;
+  let response = `New voicemails: ${voicemails.new.n}\n`;
   let counter = 1;
   for (let msg of voicemails.new.messages) {
     response += `\n${counter} - ${msg}`

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "lt": "lt --port 3000 --subdomain voicemail-to-text"
+    "lt": "lt --port 3000 --subdomain voicemail-to-text1"
   },
   "repository": {
     "type": "git",

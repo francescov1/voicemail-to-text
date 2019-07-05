@@ -43,7 +43,7 @@ const parseMessages = (text, type) => {
 
   // split into [everything before, n, all messages]
   let allMessages = text.split(
-    new RegExp(`([0-9]+) ${type === "saved" ? "saved" : "new wireless voice"} messages?`)
+    new RegExp(`([0-9]+)\/?[0-9]? ${type === "saved" ? "saved" : "new wireless voice"} messages?`)
   );
 
   if (allMessages.length === 1) {

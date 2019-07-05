@@ -6,11 +6,13 @@ exports.accessVoicemail = (number, message) => {
   // initiate the call
   return client.calls.create({
     url: `${config.base_url}/call/initialCallHandler?message=${message}&number=${number}`,
-    to: 'number',
+    to: '18776437786',
     from: config.twilio.sender_id,
     record: true,
-    machineDetection: "DetectMessageEnd",
-    //machineDetectionSpeechThreshold:
-    machineDetectionSpeechEndThreshold: 5000
+    //machineDetection: "DetectMessageEnd",
+    machineDetection: "Enable",
+    machineDetectionSpeechEndThreshold: 5000,
+    machineDetectionSpeechThreshold: 6000,
+    machineDetectionSilenceTimeout: 10000
   });
 }
