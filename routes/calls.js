@@ -26,6 +26,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
   response.play({ digits: config.voice_password });
 
   // gather the voicemail and send for parsing
+  /*
   const gather = response.gather({
     input: 'speech',
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
@@ -34,7 +35,13 @@ router.post('/initialCallHandler', async (req, res, next) => {
     hints: 'to erase this message press 7 to save it press 9,to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
     actionOnEmptyResult: true
   });
+  */
 
+  // activate autopilot
+  const connect = response.connect();
+  connect.autopilot('https://channels.autopilot.twilio.com/v1/AC4244655cd24d5a4d5ec89d0b151aeaeb/UAbe72409dc9981e6b95d3fd49944e0975/twilio-voice');
+
+  console.log(response.toString());
   res.type('text/xml');
   res.send(response.toString());
 });
