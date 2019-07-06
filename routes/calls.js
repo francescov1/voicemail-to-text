@@ -75,8 +75,7 @@ router.post('/read', async (req, res, next) => {
     return res.end();
   }
   catch(err) { return next(err) }
-
-})
+});
 
 // TODO:
 router.post('/delete', async (req, res, next) => {
