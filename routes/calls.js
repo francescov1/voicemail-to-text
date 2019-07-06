@@ -27,12 +27,13 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   // gather the voicemail and send for parsing
   const gather = response.gather({
-    input: 'speech',
+    input: 'dtfm speech',
+    timeout: 20,
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
     profanityFilter: false,
     finishOnKey: '',
     hints: 'to erase this message press 7 to save it press 9,to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
-    actionOnEmptyResult: true
+    actionOnEmptyResult: true // remove once always working
   });
 
   res.type('text/xml');
