@@ -11,7 +11,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 router.post('/initialCallHandler', async (req, res, next) => {
   const { number, message } = req.query;
   console.log('sending data to call');
-  console.log('number: ' + number)
+  console.log('number: ' + number);
   console.log('message: ' + message);
 
   const response = new VoiceResponse();
@@ -21,14 +21,15 @@ router.post('/initialCallHandler', async (req, res, next) => {
     digits: `4039928497`
   });
 
-  response.pause({ length: 10 })
+  response.pause({ length: 10 });
 
   response.play({ digits: config.voice_password });
 
   // gather the voicemail and send for parsing
   const gather = response.record({
     timeout: 20,
-    transcribe: true
+    transcribe: true,
+    maxLength: 7200
   });
 
   res.type('text/xml');
@@ -37,8 +38,8 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
 router.post('/read', async (req, res, next) => {
   console.log('parsing voicemail dialog');
-  console.log('req.body received:')
-  console.log(req.body)
+  console.log('req.body received:');
+  console.log(req.body);
   const voicemailDialog = req.body.SpeechResult;
   const number = req.query.number;
 
@@ -53,15 +54,15 @@ router.post('/read', async (req, res, next) => {
   let response = `New voicemails: ${voicemails.new.n}\n`;
   let counter = 1;
   for (let msg of voicemails.new.messages) {
-    response += `\n${counter} - ${msg}`
-    counter++
+    response += `\n${counter} - ${msg}`;
+    counter++;
   }
 
-  response += `\n\nSaved voicemails: ${voicemails.saved.n}\n`
+  response += `\n\nSaved voicemails: ${voicemails.saved.n}\n`;
 
   for (let msg of voicemails.saved.messages) {
-    response += `\n${counter} - ${msg}`
-    counter++
+    response += `\n${counter} - ${msg}`;
+    counter++;
   }
 
   try {
@@ -84,7 +85,6 @@ router.post('/delete', async (req, res, next) => {
   const voicemailsToDelete = req.body.delete;
 
   const voicemails = dialog.parseMessages(voicemailDialog);
-
-})
+});
 
 module.exports = router;
