@@ -8,7 +8,6 @@ exports.accessVoicemail = (number, message) => {
     url: `${config.base_url}/call/initialCallHandler?message=${message}&number=${number}`,
     to: '18776437786',
     from: config.twilio.sender_id,
-    record: true,
     //machineDetection: "DetectMessageEnd",
     machineDetection: "Enable",
     machineDetectionSpeechEndThreshold: 5000,

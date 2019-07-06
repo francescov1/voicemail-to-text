@@ -26,14 +26,9 @@ router.post('/initialCallHandler', async (req, res, next) => {
   response.play({ digits: config.voice_password });
 
   // gather the voicemail and send for parsing
-  const gather = response.gather({
-    input: 'dtfm speech',
+  const gather = response.record({
     timeout: 20,
-    action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
-    profanityFilter: false,
-    finishOnKey: '',
-    hints: 'to erase this message press 7 to save it press 9,to erase this message press 7 to reply to it press 8 to save it press 9, next message, first saved message, next saved message, first new message, next message, end of messages, new wireless voice messages, saved messages',
-    actionOnEmptyResult: true // remove once always working
+    transcribe: true
   });
 
   res.type('text/xml');
