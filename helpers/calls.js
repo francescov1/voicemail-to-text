@@ -6,7 +6,8 @@ exports.accessVoicemail = (number, message) => {
   // initiate the call
   return client.calls.create({
     url: `${config.base_url}/call/initialCallHandler?message=${message}&number=${number}`,
-    to: '18776437786',
+    // TODO: should be getting user's provider
+    to: config.rogers_provider_number,
     from: config.twilio.sender_id,
     //machineDetection: "DetectMessageEnd",
   //  machineDetection: "Enable",

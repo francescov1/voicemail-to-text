@@ -16,10 +16,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   const response = new VoiceResponse();
 
-  // press pound key when call begins
-  response.play({
-    digits: `4039928497`
-  });
+  response.play({ digits: number.slice(-10) });
 
   response.pause({ length: 10 });
 
