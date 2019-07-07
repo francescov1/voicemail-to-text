@@ -11,6 +11,12 @@
     "type": "git",
     "url": "git+https://github.com/francescov1/voicemail-to-text.git"
   },
+  "nodemonConfig": {
+    "watch": [
+      "*.*",
+      ".env"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -25,11 +25,14 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   response.play({ digits: config.voice_password });
 
-  // gather the voicemail and send for parsing
-  const gather = response.record({
+  // record the voicemail and send for parsing
+  const record = response.record({
+    action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
+    method: 'POST',
     timeout: 20,
+    maxLength: 7200,
     transcribe: true,
-    maxLength: 7200
+    transcribeCallback: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
   });
 
   res.type('text/xml');
@@ -40,7 +43,12 @@ router.post('/read', async (req, res, next) => {
   console.log('parsing voicemail dialog');
   console.log('req.body received:');
   console.log(req.body);
-  const voicemailDialog = req.body.SpeechResult;
+  if (!req.body.TranscriptionUrl) {
+    console.log('recording callback, ending function')
+    return res.end();
+  }
+
+  const voicemailDialog = req.body.TranscriptionText;
   const number = req.query.number;
 
   // TODO: check whos number, may nee to adjust the speech to text based

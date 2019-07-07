@@ -5,7 +5,8 @@
 // dialog: "welcome to rogers wireless voicemail. Please enter your password"
 // action: send password digits
 // dialog (if new messages): "you have _ new wireless voice messages."
-// dialog (if saved message): "you have _ saved messages."
+// dialog (if saved messages and no new): "you have _ saved wireless voice messages."
+// dialog (if saved messages and new messages): "you have _ saved messages."
 
 // if new messages
 // dialog : "First new message:"
@@ -46,6 +47,14 @@ const parseMessages = (text, type) => {
     new RegExp(`([0-9]+)\/?[0-9]? ${type === "saved" ? "saved" : "new wireless voice"} messages?`)
   );
 
+  // if there are no new messages, saved line will be different. Check if this exists
+  if (allMessages.length === 1 && type === "saved") {
+    console.log('message only has saved')
+    allMessages = text.split(
+      new RegExp(`([0-9]+)\/?[0-9]? saved wireless voice messages?`)
+    );
+  }
+
   if (allMessages.length === 1) {
     console.log(`no ${type} messages`)
     return parsedMessages;
@@ -55,26 +64,31 @@ const parseMessages = (text, type) => {
   }
 
   if (type === "saved") {
-    text = text.replace(/.*first saved message/, '');
+    text = text.replace(/.*1st saved (a )?message/, '');
   }
   else {
-    text = text.replace(/.*first new message/, '');
-    text = text.replace(/first saved message.*/, '');
+    text = text.replace(/.*1st new (a )?message/, '');
+    text = text.replace(/1st saved (a )?message.*/, '');
   }
 
   // split messages into array of voicemails
-  let messages = text.split('next saved message')
+  let messages = text.split(/next saved message\.?/)
 
   parsedMessages.messages = messages.map(msg => {
-    return msg.replace('to erase this message, press 7, to reply to it, press 8, to save it, press 9', '');
+    msg = msg.replace('to erase this message press 7 ', '')
+    msg = msg.replace('to reply to it press 8 ', '')
+    msg = msg.replace('to save it press 9 ', '');
+    msg = msg.trim();
+    return msg === '' ? '(Empty message)' : msg;
   })
 
   return parsedMessages;
 }
 
 exports.parseVoicemail = (text) => {
-  // TODO: double check if need to lowercase text
   let voicemails = {};
+
+  text = text.toLowerCase();
 
   // remove anything after messages
   text = text.replace(/end of messages.*/, '')

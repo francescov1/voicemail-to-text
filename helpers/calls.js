@@ -9,9 +9,9 @@ exports.accessVoicemail = (number, message) => {
     to: '18776437786',
     from: config.twilio.sender_id,
     //machineDetection: "DetectMessageEnd",
-    machineDetection: "Enable",
-    machineDetectionSpeechEndThreshold: 5000,
-    machineDetectionSpeechThreshold: 6000,
-    machineDetectionSilenceTimeout: 10000
+  //  machineDetection: "Enable",
+  //  machineDetectionSpeechEndThreshold: 5000,
+  //  machineDetectionSpeechThreshold: 6000,
+  //  machineDetectionSilenceTimeout: 10000
   });
 }
