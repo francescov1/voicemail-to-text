@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 module.exports = {
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 8080,
   node_env: process.env.NODE_ENV || 'development',
   base_url: process.env.BASE_URL,
   voice_password: process.env.VOICE_PASSWORD,

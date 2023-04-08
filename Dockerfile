@@ -4,7 +4,11 @@ COPY . /app
 WORKDIR /app
 
 # Install dependencies
-RUN npm install --production
+COPY package*.json ./
+RUN npm ci --quiet --no-progress --production
+
+COPY . .
 
 # Build and run
+EXPOSE 8080
 CMD npm start
