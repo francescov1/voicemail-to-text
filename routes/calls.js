@@ -24,6 +24,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   // record the voicemail and send for parsing
   const record = response.record({
+    // TODO: This splitting is not ideal, clean up. Essentially were getting the command "read" or "delete" from the API call and then using it as the route path
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
     method: 'POST',
     timeout: 20,
@@ -47,11 +48,6 @@ router.post('/read', async (req, res, next) => {
 
   const voicemailDialog = req.body.TranscriptionText;
   const number = req.query.number;
-
-  // TODO: check whos number, may nee to adjust the speech to text based
-  // on which service provider
-
-  // for now assume its rogers
 
   const voicemails = dialog.parseVoicemail(voicemailDialog);
 
