@@ -10,14 +10,14 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 router.post('/initialCallHandler', async (req, res, next) => {
   const { number, message } = req.query;
-  console.log('sending data to call');
+  console.log("Received initial call handler callback, responding with TwiML")
   console.log('number: ' + number);
   console.log('message: ' + message);
 
   const response = new VoiceResponse();
 
   response.pause({ length: 10 });
-  
+
   // NOTE: Can add "w" between digits for a 0.5 second pause
   response.play({ digits: number.slice(-10) });
 
@@ -27,7 +27,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   // record the voicemail and send for parsing
   const record = response.record({
-    // TODO: This splitting is not ideal, clean up. Essentially were getting the command "read" or "delete" from the API call and then using it as the route path
+    // TODO: This implementation is messy, clean up. Essentially were getting the command "read" or "delete" from the API call and then using it as the route path
     action: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
     method: 'POST',
     timeout: 20,
@@ -35,8 +35,6 @@ router.post('/initialCallHandler', async (req, res, next) => {
     transcribe: true,
     transcribeCallback: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
   });
-
-  response.hangup();
 
   res.type('text/xml');
   res.send(response.toString());
