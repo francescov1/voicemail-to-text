@@ -16,6 +16,9 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
   const response = new VoiceResponse();
 
+  response.pause({ length: 10 });
+  
+  // NOTE: Can add "w" between digits for a 0.5 second pause
   response.play({ digits: number.slice(-10) });
 
   response.pause({ length: 10 });
@@ -32,6 +35,8 @@ router.post('/initialCallHandler', async (req, res, next) => {
     transcribe: true,
     transcribeCallback: `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`,
   });
+
+  response.hangup();
 
   res.type('text/xml');
   res.send(response.toString());
