@@ -38,17 +38,16 @@ router.post('/initialCallHandler', async (req, res, next) => {
 });
 
 router.post('/read', async (req, res, next) => {
-  console.log('parsing voicemail dialog');
-  console.log('req.body received:');
-  console.log(req.body);
   if (!req.body.TranscriptionUrl) {
-    console.log('recording callback, ending function')
+    // This gets called when the recording completes but before the transcript is done
+    console.log('No transcript URL present, ignoring request')
     return res.end();
   }
 
   const voicemailDialog = req.body.TranscriptionText;
   const number = req.query.number;
 
+  console.log('Parsing voicemail dialog: ', voicemailDialog);
   const voicemails = dialog.parseVoicemail(voicemailDialog);
 
   // TODO: get sender
