@@ -17,6 +17,8 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
     const response = new VoiceResponse();
 
+    // TODO: Update twilio library to latest and see if things work better
+    // TODO: Figure out how to pause before call. Would be a lot easier if we can figure out how to listen in on calls, or save the audio file somewhere.
     // response.pause({ length: 5 });
 
     // NOTE: Can add "w" between digits for a 0.5 second pause
@@ -59,7 +61,7 @@ router.post('/read', async (req, res, next) => {
     const voicemailDialog = req.body.TranscriptionText;
     const number = req.query.number;
 
-    console.log('Parsing voicemail dialog: ', voicemailDialog);
+    console.log('Parsing voicemail dialog: ' + voicemailDialog);
     const voicemails = dialog.parseVoicemail(voicemailDialog);
 
     // TODO: get sender
