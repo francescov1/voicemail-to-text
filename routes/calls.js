@@ -17,7 +17,7 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
     const response = new VoiceResponse();
 
-    response.pause({ length: 5 });
+    // response.pause({ length: 5 });
 
     // NOTE: Can add "w" between digits for a 0.5 second pause
     response.play({ digits: number.slice(-10) });
