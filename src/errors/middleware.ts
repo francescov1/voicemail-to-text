@@ -1,7 +1,7 @@
-'use strict';
+import { Request, Response, NextFunction } from 'express';
 
 // error handling middlewear
-function errorHandler(err, req, res, next) {
+export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
 
   var status = err.status || err.statusCode || err.code;
@@ -12,5 +12,3 @@ function errorHandler(err, req, res, next) {
     }
   });
 }
-
-module.exports = errorHandler;

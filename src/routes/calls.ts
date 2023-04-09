@@ -1,16 +1,15 @@
-'use strict';
-const config = require('../config');
-const client = require('../config/twilio');
-const dialog = require('../helpers/dialog');
+import config from '../config'
+import twilioClient from '../config/twilio'
+import * as dialog from '../helpers/dialog'
 
-const express = require('express');
+import express from 'express'
 const router = express.Router();
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 router.post('/initialCallHandler', async (req, res, next) => {
   try {
-    const { number, message } = req.query;
+    const { number, message } = req.query as { number: string, message: string };
     console.log("Received initial call handler callback, responding with TwiML")
     console.log('number: ' + number);
     console.log('message: ' + message);
@@ -58,8 +57,8 @@ router.post('/read', async (req, res, next) => {
       return res.end();
     }
 
-    const voicemailDialog = req.body.TranscriptionText;
-    const number = req.query.number;
+    const voicemailDialog = req.body.TranscriptionText as string;
+    const number = req.query.number as string;
 
     console.log('Parsing voicemail dialog: ' + voicemailDialog);
     const voicemails = dialog.parseVoicemail(voicemailDialog);
@@ -78,7 +77,7 @@ router.post('/read', async (req, res, next) => {
       response += `\n${counter} - ${msg}`;
       counter++;
     }
-    const message = await client.messages.create({
+    const message = await twilioClient.messages.create({
       body: response,
       from: config.twilio.sender_id,
       to: number
@@ -97,11 +96,11 @@ router.post('/delete', async (req, res, next) => {
     const number = req.body.number;
     const voicemailsToDelete = req.body.delete;
     
-    const voicemails = dialog.parseMessages(voicemailDialog);
+    // const voicemails = dialog.parseMessages(voicemailDialog);
   }
   catch(err) {
     return next(err)
   }
 });
 
-module.exports = router;
+export default router;

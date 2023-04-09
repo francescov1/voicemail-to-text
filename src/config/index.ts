@@ -1,7 +1,7 @@
-'use strict';
-require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config();
 
-module.exports = {
+export default {
   port: process.env.PORT || 8080,
   node_env: process.env.NODE_ENV || 'development',
   base_url: process.env.BASE_URL,

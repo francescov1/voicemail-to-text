@@ -1,8 +1,7 @@
-'use strict';
-const express = require('express');
+import express from 'express'
 const router = express.Router();
 
 router.use('/sms', require('./sms'));
 router.use('/call', require('./calls'));
 
-module.exports = router;
+export default router;

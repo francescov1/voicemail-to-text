@@ -5,10 +5,11 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci --quiet --no-progress --production
+RUN npm ci --quiet --no-progress
 
 COPY . .
 
 # Build and run
+RUN npm run build
 EXPOSE 8080
-CMD npm start
+CMD npm run prod
