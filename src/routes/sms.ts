@@ -4,8 +4,6 @@ import { initiateVoicemailCall } from '../helpers/calls'
 
 const router = express.Router();
 
-
-// TODO: Resolve todos, cleanup code, make sure everything works properly, finish delete command.
 // TODO: Look at price for every execution, decide if its worth checking regularly, or just leave it up to user to initiate via sms
 
 router.post('/getVoicemail', async (req, res, next) => {
