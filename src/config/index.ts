@@ -1,4 +1,5 @@
-import dotenv from 'dotenv'
+// @types packages are not working properly, probably some dumb config issue, not worth figuring out unless I continue building this project
+const dotenv = require('dotenv');
 dotenv.config();
 
 export default {

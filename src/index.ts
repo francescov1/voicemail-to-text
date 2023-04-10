@@ -1,8 +1,10 @@
 Promise = require('bluebird');
 import config from './config'
 import express from 'express'
-import helmet from 'helmet'
 import bodyParser from 'body-parser'
+
+// @types packages are not working properly, probably some dumb config issue, not worth figuring out unless I continue building this project
+const helmet = require('helmet');
 const logger = require("morgan");
 
 import routes from './routes'
