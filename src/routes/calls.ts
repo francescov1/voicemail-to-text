@@ -15,47 +15,22 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
     const response = new VoiceResponse();
 
-    // TODO: Figure out how to pause before call. Would be a lot easier if we can figure out how to listen in on calls, or save the audio file somewhere.
-    // response.pause({ length: 1 });
-
-    // NOTE: Can add "w" between digits for a 0.5 second pause
-    response.play({ digits: number.slice(-10) });
-
-    response.pause({ length: 10 });
-
-    response.play({ digits: config.voice_password });
+    response.play({ digits: "ww#" });
+    response.play({ digits: `ww${config.voice_password}` });
 
     // TODO: This implementation is messy, clean up. Essentially were getting the command "read" or "delete" from the API call and then using it as the route path
     const transcriptionCallbackUrl = `${config.base_url}/call/${message.split(' ')[0]}?number=${number}`
     console.log("Sending recording transcription callback to URL " + transcriptionCallbackUrl);
 
-    // Using Record wasnt working well since the transcription was very inaccurate.
-    // record the voicemail and send for parsing
-    // const record = response.record({
-    //   action: transcriptionCallbackUrl,
-    //   method: 'POST',
-    //   timeout: 20,
-    //   maxLength: 7200,
-    //   transcribe: true,
-    //   transcribeCallback: transcriptionCallbackUrl
-    // });
-
-    // TODO: add phrases and hints
-    // NOTE: Max gather time is 60s, but should be able to use multiple gather statements, could do one for each voicemail, or simply look at how long a call usually is and chain enough to cover that
-    const gather = response.gather({
+    response.record({
       action: transcriptionCallbackUrl,
-      // NOTE: If this isnt effective, use google class tokens https://www.twilio.com/docs/voice/twiml/gather#hints
-      // hints: "this is a phrase I expect to hear, keyword, product name, name", 
-      input: ['speech'],
       method: 'POST',
-      profanityFilter: false,
-      timeout: 20, // amount of silence time to wait before stopping gather
-      speechModel: 'phone_call', // Set to default if this isnt working as expected
-      // enhanced: true, // uses a more accurate speech model, but more expensive
-    })
-
-    // gather.say('Please enter your account number,\nfollowed by the pound sign');
-  
+      timeout: 30,
+      maxLength: 7200,
+      transcribe: true,
+      transcribeCallback: transcriptionCallbackUrl
+    });
+      
     res.type('text/xml');
     res.send(response.toString());
   }
@@ -66,21 +41,16 @@ router.post('/initialCallHandler', async (req, res, next) => {
 
 router.post('/read', async (req, res, next) => {
   try {
-    if (!req.body.SpeechResult) {
+    if (!req.body.TranscriptionText) {
       // This gets called when the recording completes but before the transcript is done
-      console.log('No SpeechResult present, ignoring request')
-      console.log(req.body)
+      console.log('No TranscriptionText present, ignoring request')
       return res.end();
     }
 
-    // SpeechResult: "978 is not a recognized mailbox number set a buzz. When you mailed it wide book on you to access your own voicemail box, enter your phone number with area code then press pound to Lexi the above blood work as Evel, Knievel, the city of fun as a place to get syphilis. You're not really. So busy as",
-    // Old method: 978 is not a recognized mailbox number nurse fit. We need buzzer and you know who the blood vocab. Hooking you to access your own voicemail box. Enter your phone number with area code. Then press, pound for like, city of to wed for gal convulsive oakland. You be able to telephone everglades gets if it is Janelle 3 at p. Yes. Over the years. Sorry. You're having trouble. Please try again later. This leak of was a pull. It is only me vase a you the new vo uh rita.
-
-    const voicemailDialog = req.body.SpeechResult as string;
-    const confidence = Number(req.body.Confidence);
+    const voicemailDialog = req.body.TranscriptionText as string;
     const phoneNumber = req.query.number as string;
 
-    console.log(`Parsing voicemail dialog with confidence ${confidence}: ` + voicemailDialog);
+    console.log(`Parsing voicemail dialog: ` + voicemailDialog);
     const voicemails = dialog.parseVoicemail(voicemailDialog);
 
     // TODO: get sender

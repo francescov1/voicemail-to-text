@@ -5,8 +5,8 @@ export const initiateVoicemailCall = (number: string, message: string) => {
   // initiate the call
   return twilioClient.calls.create({
     url: `${config.base_url}/call/initialCallHandler?message=${message}&number=${number}`,
-    // TODO: should be getting user's provider
-    to: config.rogers_provider_number as string,
+    // to: config.rogers_provider_number as string,
+    to: number,
     from: config.twilio.sender_id as string,
     //machineDetection: "DetectMessageEnd",
   //  machineDetection: "Enable",
