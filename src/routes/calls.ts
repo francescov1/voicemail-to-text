@@ -39,6 +39,8 @@ router.post('/initialCallHandler', async (req, res, next) => {
   }
 });
 
+// TODO: An easier way to parse voicemail would be to gather every automated message. But pauses might be inconsistent. Could have one func which just looks for the automated stuff
+
 router.post('/read', async (req, res, next) => {
   try {
     if (!req.body.TranscriptionText) {

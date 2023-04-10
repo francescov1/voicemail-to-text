@@ -40,11 +40,14 @@ interface ParcedMessages {
   n: number;
 }
 
+  // TODO: Rewrite this func. See dialog outlined above. Heres examples of text: 
+  // You have to have wireless voice messages 1st saved message. Hello francesco. It's saggy from Dr terabytes office. You can please give me a call at 587-317-6559. Thank you. Bye bye. To erase this message, press 7. To save it, press 9 Next saved message.
+  // You have 2 new wireless voice messages. First your message. Hello, francesco. It's saggy from Dr terabytes office. You can please give me a call at 587-317-6559. Thank you. Bye bye. To erase this message, press 7. To save it, press 9 Next message.
 const parseMessages = (text: string, type: "saved" | "new"): ParcedMessages => {
-
+  
   let parsedMessages: ParcedMessages = { messages: [], n: 0 };
 
-  // split into [everything before, n, all messages]
+  // split into [everything before, n, messages]
   let allMessages = text.split(
     new RegExp(`([0-9]+)\/?[0-9]? ${type === "saved" ? "saved" : "new wireless voice"} messages?`)
   );
