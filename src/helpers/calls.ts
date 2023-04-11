@@ -1,14 +1,13 @@
-'use strict';
-const config = require('../config/index');
-const client = require('../config/twilio');
+import config from '../config/index';
+import twilioClient from '../config/twilio'
 
-exports.accessVoicemail = (number, message) => {
+export const initiateVoicemailCall = (number: string, message: string) => {
   // initiate the call
-  return client.calls.create({
+  return twilioClient.calls.create({
     url: `${config.base_url}/call/initialCallHandler?message=${message}&number=${number}`,
-    // TODO: should be getting user's provider
-    to: config.rogers_provider_number,
-    from: config.twilio.sender_id,
+    // to: config.rogers_provider_number as string,
+    to: number,
+    from: config.twilio.sender_id as string,
     //machineDetection: "DetectMessageEnd",
   //  machineDetection: "Enable",
   //  machineDetectionSpeechEndThreshold: 5000,

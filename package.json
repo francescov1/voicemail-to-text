@@ -2,10 +2,13 @@
   "name": "voicemail-to-text",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node index.js",
-    "lt": "lt --port 3000 --subdomain voicemail-to-text"
+    "start": "ts-node src/index.ts",
+    "prod": "node dist/index.js",
+    "ngrok": "ngrok http 8080",
+    "deploy": "bash ./deploy.sh",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -32,6 +35,14 @@
     "helmet": "^3.18.0",
     "mongoose": "^5.6.3",
     "morgan": "^1.9.1",
-    "twilio": "^3.33.0"
+    "twilio": "^4.10.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/helmet": "^4.0.0",
+    "ngrok": "^4.3.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }
